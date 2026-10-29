@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense & Budget Visualizer</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="app-header">
+    <h1>💸 BudgetKu <span>Expense Tracker</span></h1>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+      <span id="themeIcon">🌙</span>
+      <span id="themeLabel">Gelap</span>
+    </button>
+  </header>
+
+  <main class="main" id="main">
+
+    <!-- ==================== SUMMARY ==================== -->
+    <section aria-label="Ringkasan keuangan">
+      <div class="summary-grid">
+        <div class="summary-card income" role="status" aria-live="polite">
+          <span class="label">Pemasukan</span>
+          <span class="value" id="totalIncome">Rp 0</span>
+        </div>
+        <div class="summary-card expense" role="status" aria-live="polite">
+          <span class="label">Pengeluaran</span>
+          <span class="value" id="totalExpense">Rp 0</span>
+        </div>
+        <div class="summary-card balance" role="status" aria-live="polite">
+          <span class="label">Saldo</span>
+          <span class="value" id="totalBalance">Rp 0</span>
+        </div>
+        <div class="summary-card count" role="status" aria-live="polite">
+          <span class="label">Transaksi</span>
+          <span class="value" id="totalCount">0</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== FORM ==================== -->
+    <section class="panel" aria-label="Tambah transaksi">
+      <h2 class="panel-title">➕ Tambah Transaksi</h2>
+
+      <form id="transactionForm" novalidate>
+        <div class="form-grid">
+          <!-- Item Name -->
+          <div class="form-group">
+            <label for="itemName">Nama Item</label>
+            <input
+              type="text"
+              id="itemName"
+              name="itemName"
+              placeholder="mis. Makan siang"
+              autocomplete="off"
+              aria-required="true"
+            />
+            <span class="error-msg" id="itemNameError" role="alert"></span>
+          </div>
+
+          <!-- Type -->
+          <div class="form-group">
+            <label for="type">Tipe</label>
+            <select id="type" name="type" aria-required="true">
+              <option value="expense">Pengeluaran</option>
+              <option value="income">Pemasukan</option>
+            </select>
+            <span class="error-msg" aria-hidden="true"></span>
+          </div>
+
+          <!-- Amount -->
+          <div class="form-group">
+            <label for="amount">Jumlah (IDR)</label>
+            <input
+              type="number"
+              id="amount"
+              name="amount"
+              placeholder="mis. 25000"
+              min="1"
+              step="any"
+              aria-required="true"
+            />
+            <span class="error-msg" id="amountError" role="alert"></span>
+          </div>
+
+          <!-- Category -->
+          <div class="form-group">
+            <label for="category">Kategori</label>
+            <select id="category" name="category" aria-required="true">
+              <!-- Options injected by JS -->
+            </select>
+            <span class="error-msg" id="categoryError" role="alert"></span>
+          </div>
+
+          <!-- Submit -->
+          <div class="form-group">
+            <label style="visibility:hidden" aria-hidden="true">Aksi</label>
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+              Tambah
+            </button>
+          </div>
+        </div>
+
+        <!-- Add custom category row -->
+        <div class="add-category-row">
+          <input
+            type="text"
+            id="newCategoryInput"
+            placeholder="Tambah kategori baru…"
+            aria-label="Nama kategori baru"
+            autocomplete="off"
+          />
+          <button type="button" class="btn btn-ghost" id="addCategoryBtn">+ Kategori</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ==================== TRANSACTION LIST ==================== -->
+    <section class="panel" aria-label="Daftar transaksi">
+      <div class="list-header">
+        <h2 class="panel-title" style="margin-bottom:0">📋 Daftar Transaksi</h2>
+        <button class="btn btn-danger" id="clearAllBtn" style="display:none">🗑 Hapus Semua</button>
+      </div>
+
+      <!-- Sort controls -->
+      <div class="sort-bar" id="sortBar" style="display:none" role="group" aria-label="Urutkan transaksi">
+        <span>Urutkan:</span>
+        <button class="sort-btn" data-sort="default" aria-pressed="true">Terbaru</button>
+        <button class="sort-btn" data-sort="amount-asc" aria-pressed="false">Jumlah ↑</button>
+        <button class="sort-btn" data-sort="amount-desc" aria-pressed="false">Jumlah ↓</button>
+        <button class="sort-btn" data-sort="category" aria-pressed="false">Kategori A–Z</button>
+      </div>
+
+      <ul class="transaction-list" id="transactionList" aria-live="polite" aria-label="Transaksi tersimpan">
+        <!-- Items injected by JS -->
+      </ul>
+    </section>
+
+    <!-- ==================== CHART ==================== -->
+    <section class="panel" aria-label="Grafik pengeluaran">
+      <h2 class="panel-title">🍩 Pengeluaran per Kategori</h2>
+      <div class="chart-container">
+        <canvas
+          id="spendingChart"
+          width="260"
+          height="260"
+          role="img"
+          aria-label="Pie chart pengeluaran per kategori"
+        ></canvas>
+        <div class="chart-legend" id="chartLegend" aria-hidden="true"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
